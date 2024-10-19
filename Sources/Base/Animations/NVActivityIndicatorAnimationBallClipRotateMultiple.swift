@@ -25,29 +25,39 @@
 // SOFTWARE.
 //
 
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
+import AppKit
+#endif
+
 #if canImport(UIKit)
 import UIKit
+#endif
 
 class NVActivityIndicatorAnimationBallClipRotateMultiple: NVActivityIndicatorAnimationDelegate {
-
-    func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor) {
+    func setUpAnimation(in layer: CALayer, size: CGSize, color: NSUIColor) {
         let bigCircleSize: CGFloat = size.width
         let smallCircleSize: CGFloat = size.width / 2
         let longDuration: CFTimeInterval = 1
         let timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
 
-        circleOf(shape: .ringTwoHalfHorizontal,
-                 duration: longDuration,
-                 timingFunction: timingFunction,
-                 layer: layer,
-                 size: bigCircleSize,
-                 color: color, reverse: false)
-        circleOf(shape: .ringTwoHalfVertical,
-                 duration: longDuration,
-                 timingFunction: timingFunction,
-                 layer: layer,
-                 size: smallCircleSize,
-                 color: color, reverse: true)
+        circleOf(
+            shape: .ringTwoHalfHorizontal,
+            duration: longDuration,
+            timingFunction: timingFunction,
+            layer: layer,
+            size: bigCircleSize,
+            color: color,
+            reverse: false
+        )
+        circleOf(
+            shape: .ringTwoHalfVertical,
+            duration: longDuration,
+            timingFunction: timingFunction,
+            layer: layer,
+            size: smallCircleSize,
+            color: color,
+            reverse: true
+        )
     }
 
     func createAnimationIn(duration: CFTimeInterval, timingFunction: CAMediaTimingFunction, reverse: Bool) -> CAAnimation {
@@ -69,6 +79,7 @@ class NVActivityIndicatorAnimationBallClipRotateMultiple: NVActivityIndicatorAni
         } else {
             rotateAnimation.values = [0, -Double.pi, -2 * Double.pi]
         }
+        
         rotateAnimation.duration = duration
 
         // Animation
@@ -83,12 +94,14 @@ class NVActivityIndicatorAnimationBallClipRotateMultiple: NVActivityIndicatorAni
     }
 
     // swiftlint:disable:next function_parameter_count
-    func circleOf(shape: NVActivityIndicatorShape, duration: CFTimeInterval, timingFunction: CAMediaTimingFunction, layer: CALayer, size: CGFloat, color: UIColor, reverse: Bool) {
+    func circleOf(shape: NVActivityIndicatorShape, duration: CFTimeInterval, timingFunction: CAMediaTimingFunction, layer: CALayer, size: CGFloat, color: NSUIColor, reverse: Bool) {
         let circle = shape.layerWith(size: CGSize(width: size, height: size), color: color)
-        let frame = CGRect(x: (layer.bounds.size.width - size) / 2,
-                           y: (layer.bounds.size.height - size) / 2,
-                           width: size,
-                           height: size)
+        let frame = CGRect(
+            x: (layer.bounds.size.width - size) / 2,
+            y: (layer.bounds.size.height - size) / 2,
+            width: size,
+            height: size
+        )
         let animation = createAnimationIn(duration: duration, timingFunction: timingFunction, reverse: reverse)
 
         circle.frame = frame
@@ -96,4 +109,3 @@ class NVActivityIndicatorAnimationBallClipRotateMultiple: NVActivityIndicatorAni
         layer.addSublayer(circle)
     }
 }
-#endif

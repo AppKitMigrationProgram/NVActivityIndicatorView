@@ -25,12 +25,19 @@
 // SOFTWARE.
 //
 
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
+import AppKit
+#endif
+
 #if canImport(UIKit)
 import UIKit
+#endif
+
+
 
 class NVActivityIndicatorAnimationBallClipRotate: NVActivityIndicatorAnimationDelegate {
 
-    func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor) {
+    func setUpAnimation(in layer: CALayer, size: CGSize, color: NSUIColor) {
         let duration: CFTimeInterval = 0.75
 
         //    Scale animation
@@ -66,4 +73,3 @@ class NVActivityIndicatorAnimationBallClipRotate: NVActivityIndicatorAnimationDe
         layer.addSublayer(circle)
     }
 }
-#endif

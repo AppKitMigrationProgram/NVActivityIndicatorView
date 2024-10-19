@@ -25,17 +25,22 @@
 // SOFTWARE.
 //
 
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
+import AppKit
+#endif
+
 #if canImport(UIKit)
 import UIKit
+#endif
 
 class NVActivityIndicatorAnimationPacman: NVActivityIndicatorAnimationDelegate {
 
-    func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor) {
+    func setUpAnimation(in layer: CALayer, size: CGSize, color: NSUIColor) {
         circleInLayer(layer, size: size, color: color)
         pacmanInLayer(layer, size: size, color: color)
     }
 
-    func pacmanInLayer(_ layer: CALayer, size: CGSize, color: UIColor) {
+    func pacmanInLayer(_ layer: CALayer, size: CGSize, color: NSUIColor) {
         let pacmanSize = 2 * size.width / 3
         let pacmanDuration: CFTimeInterval = 0.5
         let timingFunction = CAMediaTimingFunction(name: .default)
@@ -78,7 +83,7 @@ class NVActivityIndicatorAnimationPacman: NVActivityIndicatorAnimationDelegate {
         layer.addSublayer(pacman)
     }
 
-    func circleInLayer(_ layer: CALayer, size: CGSize, color: UIColor) {
+    func circleInLayer(_ layer: CALayer, size: CGSize, color: NSUIColor) {
         let circleSize = size.width / 5
         let circleDuration: CFTimeInterval = 1
 
@@ -119,4 +124,3 @@ class NVActivityIndicatorAnimationPacman: NVActivityIndicatorAnimationDelegate {
         layer.addSublayer(circle)
     }
 }
-#endif

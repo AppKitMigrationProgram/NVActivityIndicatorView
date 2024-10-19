@@ -25,12 +25,17 @@
 // SOFTWARE.
 //
 
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
+import AppKit
+#endif
+
 #if canImport(UIKit)
 import UIKit
+#endif
 
 class NVActivityIndicatorAnimationTriangleSkewSpin: NVActivityIndicatorAnimationDelegate {
 
-    func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor) {
+    func setUpAnimation(in layer: CALayer, size: CGSize, color: NSUIColor) {
         let x = (layer.bounds.size.width - size.width) / 2
         let y = (layer.bounds.size.height - size.height) / 2
         let duration: CFTimeInterval = 3
@@ -76,4 +81,3 @@ class NVActivityIndicatorAnimationTriangleSkewSpin: NVActivityIndicatorAnimation
         return transform
     }
 }
-#endif

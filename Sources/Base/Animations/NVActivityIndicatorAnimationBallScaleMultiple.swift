@@ -25,12 +25,16 @@
 // SOFTWARE.
 //
 
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
+import AppKit
+#endif
+
 #if canImport(UIKit)
 import UIKit
+#endif
 
 class NVActivityIndicatorAnimationBallScaleMultiple: NVActivityIndicatorAnimationDelegate {
-
-    func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor) {
+    func setUpAnimation(in layer: CALayer, size: CGSize, color: NSUIColor) {
         let duration: CFTimeInterval = 1
         let beginTime = CACurrentMediaTime()
         let beginTimes = [0, 0.2, 0.4]
@@ -61,10 +65,12 @@ class NVActivityIndicatorAnimationBallScaleMultiple: NVActivityIndicatorAnimatio
         // Draw balls
         for i in 0 ..< 3 {
             let circle = NVActivityIndicatorShape.circle.layerWith(size: size, color: color)
-            let frame = CGRect(x: (layer.bounds.size.width - size.width) / 2,
-                               y: (layer.bounds.size.height - size.height) / 2,
-                               width: size.width,
-                               height: size.height)
+            let frame = CGRect(
+                x: (layer.bounds.size.width - size.width) / 2,
+                y: (layer.bounds.size.height - size.height) / 2,
+                width: size.width,
+                height: size.height
+            )
 
             animation.beginTime = beginTime + beginTimes[i]
             circle.frame = frame
@@ -74,4 +80,3 @@ class NVActivityIndicatorAnimationBallScaleMultiple: NVActivityIndicatorAnimatio
         }
     }
 }
-#endif

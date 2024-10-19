@@ -25,12 +25,17 @@
 // SOFTWARE.
 //
 
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
+import AppKit
+#endif
+
 #if canImport(UIKit)
 import UIKit
+#endif
 
 class NVActivityIndicatorAnimationBallSpinFadeLoader: NVActivityIndicatorAnimationDelegate {
 
-    func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor) {
+    func setUpAnimation(in layer: CALayer, size: CGSize, color: NSUIColor) {
         let circleSpacing: CGFloat = -2
         let circleSize = (size.width - 4 * circleSpacing) / 5
         let x = (layer.bounds.size.width - size.width) / 2
@@ -76,7 +81,7 @@ class NVActivityIndicatorAnimationBallSpinFadeLoader: NVActivityIndicatorAnimati
         }
     }
 
-    func circleAt(angle: CGFloat, size: CGFloat, origin: CGPoint, containerSize: CGSize, color: UIColor) -> CALayer {
+    func circleAt(angle: CGFloat, size: CGFloat, origin: CGPoint, containerSize: CGSize, color: NSUIColor) -> CALayer {
         let radius = containerSize.width / 2 - size / 2
         let circle = NVActivityIndicatorShape.circle.layerWith(size: CGSize(width: size, height: size), color: color)
         let frame = CGRect(
@@ -90,4 +95,3 @@ class NVActivityIndicatorAnimationBallSpinFadeLoader: NVActivityIndicatorAnimati
         return circle
     }
 }
-#endif

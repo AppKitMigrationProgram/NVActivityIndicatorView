@@ -25,12 +25,17 @@
 // SOFTWARE.
 //
 
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
+import AppKit
+#endif
+
 #if canImport(UIKit)
 import UIKit
+#endif
 
 class NVActivityIndicatorAnimationSemiCircleSpin: NVActivityIndicatorAnimationDelegate {
 
-    func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor) {
+    func setUpAnimation(in layer: CALayer, size: CGSize, color: NSUIColor) {
         let duration: CFTimeInterval = 0.6
 
         // Animation
@@ -56,4 +61,3 @@ class NVActivityIndicatorAnimationSemiCircleSpin: NVActivityIndicatorAnimationDe
         layer.addSublayer(circle)
     }
 }
-#endif

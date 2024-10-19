@@ -25,13 +25,17 @@
 // SOFTWARE.
 //
 
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
+import AppKit
+#endif
+
 #if canImport(UIKit)
 import UIKit
+#endif
 
 class NVActivityIndicatorAnimationBlank: NVActivityIndicatorAnimationDelegate {
 
-    func setUpAnimation(in _: CALayer, size _: CGSize, color _: UIColor) {
+    func setUpAnimation(in _: CALayer, size _: CGSize, color _: NSUIColor) {
         // Do nothing
     }
 }
-#endif

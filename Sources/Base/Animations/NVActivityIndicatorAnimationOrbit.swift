@@ -25,8 +25,13 @@
 // SOFTWARE.
 //
 
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
+import AppKit
+#endif
+
 #if canImport(UIKit)
 import UIKit
+#endif
 
 class NVActivityIndicatorAnimationOrbit: NVActivityIndicatorAnimationDelegate {
     let duration: CFTimeInterval = 1.9
@@ -36,7 +41,7 @@ class NVActivityIndicatorAnimationOrbit: NVActivityIndicatorAnimationDelegate {
     var coreSize: CGFloat = 0
     var satelliteSize: CGFloat = 0
 
-    func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor) {
+    func setUpAnimation(in layer: CALayer, size: CGSize, color: NSUIColor) {
         coreSize = size.width / (1 + satelliteCoreRatio + distanceRatio)
         satelliteSize = coreSize * satelliteCoreRatio
 
@@ -46,7 +51,7 @@ class NVActivityIndicatorAnimationOrbit: NVActivityIndicatorAnimationDelegate {
         satelliteInLayer(layer, size: size, color: color)
     }
 
-    func ring1InLayer(_ layer: CALayer, size _: CGSize, color: UIColor) {
+    func ring1InLayer(_ layer: CALayer, size _: CGSize, color: NSUIColor) {
         // Scale animation
         let scaleAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
 
@@ -74,17 +79,19 @@ class NVActivityIndicatorAnimationOrbit: NVActivityIndicatorAnimationDelegate {
 
         // Draw circle
         let circle = NVActivityIndicatorShape.circle.layerWith(size: CGSize(width: coreSize, height: coreSize), color: color)
-        let frame = CGRect(x: (layer.bounds.size.width - coreSize) / 2,
-                           y: (layer.bounds.size.height - coreSize) / 2,
-                           width: coreSize,
-                           height: coreSize)
+        let frame = CGRect(
+            x: (layer.bounds.size.width - coreSize) / 2,
+            y: (layer.bounds.size.height - coreSize) / 2,
+            width: coreSize,
+            height: coreSize
+        )
 
         circle.frame = frame
         circle.add(animation, forKey: "animation")
         layer.addSublayer(circle)
     }
 
-    func ring2InLayer(_ layer: CALayer, size _: CGSize, color: UIColor) {
+    func ring2InLayer(_ layer: CALayer, size _: CGSize, color: NSUIColor) {
         // Scale animation
         let scaleAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
 
@@ -112,17 +119,19 @@ class NVActivityIndicatorAnimationOrbit: NVActivityIndicatorAnimationDelegate {
 
         // Draw circle
         let circle = NVActivityIndicatorShape.circle.layerWith(size: CGSize(width: coreSize, height: coreSize), color: color)
-        let frame = CGRect(x: (layer.bounds.size.width - coreSize) / 2,
-                           y: (layer.bounds.size.height - coreSize) / 2,
-                           width: coreSize,
-                           height: coreSize)
+        let frame = CGRect(
+            x: (layer.bounds.size.width - coreSize) / 2,
+            y: (layer.bounds.size.height - coreSize) / 2,
+            width: coreSize,
+            height: coreSize
+        )
 
         circle.frame = frame
         circle.add(animation, forKey: "animation")
         layer.addSublayer(circle)
     }
 
-    func coreInLayer(_ layer: CALayer, size _: CGSize, color: UIColor) {
+    func coreInLayer(_ layer: CALayer, size _: CGSize, color: NSUIColor) {
         let inTimingFunction = CAMediaTimingFunction(controlPoints: 0.7, 0, 1, 0.5)
         let outTimingFunction = CAMediaTimingFunction(controlPoints: 0, 0.7, 0.5, 1)
         let standByTimingFunction = CAMediaTimingFunction(name: .linear)
@@ -139,25 +148,36 @@ class NVActivityIndicatorAnimationOrbit: NVActivityIndicatorAnimationDelegate {
 
         // Draw circle
         let circle = NVActivityIndicatorShape.circle.layerWith(size: CGSize(width: coreSize, height: coreSize), color: color)
-        let frame = CGRect(x: (layer.bounds.size.width - coreSize) / 2,
-                           y: (layer.bounds.size.height - coreSize) / 2,
-                           width: coreSize,
-                           height: coreSize)
+        let frame = CGRect(
+            x: (layer.bounds.size.width - coreSize) / 2,
+            y: (layer.bounds.size.height - coreSize) / 2,
+            width: coreSize,
+            height: coreSize
+        )
 
         circle.frame = frame
         circle.add(scaleAnimation, forKey: "animation")
         layer.addSublayer(circle)
     }
 
-    func satelliteInLayer(_ layer: CALayer, size: CGSize, color: UIColor) {
+    func satelliteInLayer(_ layer: CALayer, size: CGSize, color: NSUIColor) {
         // Rotate animation
         let rotateAnimation = CAKeyframeAnimation(keyPath: "position")
+        
+        #if canImport(AppKit) && !targetEnvironment(macCatalyst)
+        let clockwise = false
+        #endif
 
-        rotateAnimation.path = UIBezierPath(arcCenter: CGPoint(x: layer.bounds.midX, y: layer.bounds.midY),
-                                            radius: (size.width - satelliteSize) / 2,
-                                            startAngle: CGFloat(Double.pi * 1.5),
-                                            endAngle: CGFloat(Double.pi * 1.5 + 4 * Double.pi),
-                                            clockwise: true).cgPath
+        #if canImport(UIKit)
+        let clockwise = true
+        #endif
+        rotateAnimation.path = NSUIBezierPath(
+            arcCenter: CGPoint(x: layer.bounds.midX, y: layer.bounds.midY),
+            radius: (size.width - satelliteSize) / 2,
+            startAngle: CGFloat(Double.pi * 1.5),
+            endAngle: CGFloat(Double.pi * 1.5 + 4 * Double.pi),
+            clockwise: clockwise
+        ).asCGPath
         rotateAnimation.duration = duration * 2
         rotateAnimation.repeatCount = HUGE
         rotateAnimation.isRemovedOnCompletion = false
@@ -171,4 +191,3 @@ class NVActivityIndicatorAnimationOrbit: NVActivityIndicatorAnimationDelegate {
         layer.addSublayer(circle)
     }
 }
-#endif

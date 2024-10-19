@@ -25,18 +25,24 @@
 // SOFTWARE.
 //
 
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
+import AppKit
+#endif
+
 #if canImport(UIKit)
 import UIKit
+#endif
 
 class NVActivityIndicatorAnimationCircleStrokeSpin: NVActivityIndicatorAnimationDelegate {
-
-    func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor) {
-        let beginTime: Double = 0.5
-        let strokeStartDuration: Double = 1.2
-        let strokeEndDuration: Double = 0.7
+    func setUpAnimation(in layer: CALayer, size: CGSize, color: NSUIColor) {
+        let beginTime = 0.5
+        let strokeStartDuration = 1.2
+        let strokeEndDuration = 0.7
 
         let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation")
-        rotationAnimation.byValue = Float.pi * 2
+
+        rotationAnimation.byValue = 2 * Double.pi
+        
         rotationAnimation.timingFunction = CAMediaTimingFunction(name: .linear)
 
         let strokeEndAnimation = CABasicAnimation(keyPath: "strokeEnd")
@@ -46,11 +52,11 @@ class NVActivityIndicatorAnimationCircleStrokeSpin: NVActivityIndicatorAnimation
         strokeEndAnimation.toValue = 1
 
         let strokeStartAnimation = CABasicAnimation(keyPath: "strokeStart")
+        strokeStartAnimation.beginTime = beginTime
         strokeStartAnimation.duration = strokeStartDuration
         strokeStartAnimation.timingFunction = CAMediaTimingFunction(controlPoints: 0.4, 0.0, 0.2, 1.0)
         strokeStartAnimation.fromValue = 0
         strokeStartAnimation.toValue = 1
-        strokeStartAnimation.beginTime = beginTime
 
         let groupAnimation = CAAnimationGroup()
         groupAnimation.animations = [rotationAnimation, strokeEndAnimation, strokeStartAnimation]
@@ -66,10 +72,9 @@ class NVActivityIndicatorAnimationCircleStrokeSpin: NVActivityIndicatorAnimation
             width: size.width,
             height: size.height
         )
-
         circle.frame = frame
         circle.add(groupAnimation, forKey: "animation")
         layer.addSublayer(circle)
     }
 }
-#endif
+

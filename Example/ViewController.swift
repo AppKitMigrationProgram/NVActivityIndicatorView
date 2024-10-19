@@ -66,13 +66,15 @@ class ViewController: UIViewController, NVActivityIndicatorViewable {
                                                                 type: indicatorType)
             let animationTypeLabel = UILabel(frame: frame)
 
-            animationTypeLabel.text = String(index)
+            animationTypeLabel.text = indicatorType.animationClassName.replacingOccurrences(of: "NVActivityIndicatorView.NVActivityIndicatorAnimation", with: "")
+            animationTypeLabel.font = .systemFont(ofSize: 10)
             animationTypeLabel.sizeToFit()
             animationTypeLabel.allowsDefaultTighteningForTruncation = true
             animationTypeLabel.textColor = UIColor.white
-            animationTypeLabel.frame.origin.x += 5
+            animationTypeLabel.frame.origin.x += 0
             animationTypeLabel.frame.origin.y += CGFloat(cellHeight) - animationTypeLabel.frame.size.height
-
+            animationTypeLabel.frame.size.width = frame.width
+            animationTypeLabel.textAlignment = .center
             activityIndicatorView.padding = 20
             if indicatorType == NVActivityIndicatorType.orbit {
                 activityIndicatorView.padding = 0

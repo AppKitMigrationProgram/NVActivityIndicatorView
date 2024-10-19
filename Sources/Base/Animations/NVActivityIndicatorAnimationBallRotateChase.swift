@@ -25,12 +25,16 @@
 // SOFTWARE.
 //
 
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
+import AppKit
+#endif
+
 #if canImport(UIKit)
 import UIKit
+#endif
 
 class NVActivityIndicatorAnimationBallRotateChase: NVActivityIndicatorAnimationDelegate {
-
-    func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor) {
+    func setUpAnimation(in layer: CALayer, size: CGSize, color: NSUIColor) {
         let circleSize = size.width / 5
 
         // Draw circles
@@ -62,7 +66,16 @@ class NVActivityIndicatorAnimationBallRotateChase: NVActivityIndicatorAnimationD
         let positionAnimation = CAKeyframeAnimation(keyPath: "position")
         positionAnimation.duration = duration
         positionAnimation.repeatCount = HUGE
-        positionAnimation.path = UIBezierPath(arcCenter: CGPoint(x: x, y: y), radius: size.width / 2, startAngle: CGFloat(3 * Double.pi * 0.5), endAngle: CGFloat(3 * Double.pi * 0.5 + 2 * Double.pi), clockwise: true).cgPath
+
+        #if canImport(AppKit) && !targetEnvironment(macCatalyst)
+        let clockwise = false
+        #endif
+
+        #if canImport(UIKit)
+        let clockwise = true
+        #endif
+        
+        positionAnimation.path = NSUIBezierPath(arcCenter: CGPoint(x: x, y: y), radius: size.width / 2, startAngle: CGFloat(3 * Double.pi * 0.5), endAngle: CGFloat(3 * Double.pi * 0.5 + 2 * Double.pi), clockwise: clockwise).asCGPath
 
         // Aniamtion
         let animation = CAAnimationGroup()
@@ -75,4 +88,3 @@ class NVActivityIndicatorAnimationBallRotateChase: NVActivityIndicatorAnimationD
         return animation
     }
 }
-#endif

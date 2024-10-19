@@ -25,11 +25,16 @@
 // SOFTWARE.
 //
 
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
+import AppKit
+#endif
+
 #if canImport(UIKit)
 import UIKit
+#endif
 
 // swiftlint:disable:next class_delegate_protocol
 protocol NVActivityIndicatorAnimationDelegate {
-    func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor)
+    func setUpAnimation(in layer: CALayer, size: CGSize, color: NSUIColor)
 }
-#endif
+
