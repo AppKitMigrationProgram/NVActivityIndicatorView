@@ -9,6 +9,7 @@ Pod::Spec.new do |s|
   s.social_media_url  = 'http://twitter.com/ninjaprox'
   s.documentation_url = 'https://nvactivityindicatorview.vinhis.me'
 
+  s.osx.deployment_target  = '10.13'
   s.ios.deployment_target  = '9.0'
   s.tvos.deployment_target = '9.0'
   s.swift_version          = '5.0'
@@ -25,5 +26,7 @@ Pod::Spec.new do |s|
   end
   s.default_subspec = 'Base'
 
-  s.frameworks = 'UIKit', 'QuartzCore'
+  s.ios.frameworks = 'UIKit', 'QuartzCore'
+  s.tvos.frameworks = 'UIKit', 'QuartzCore'
+  s.osx.frameworks = 'AppKit', 'QuartzCore'
 end
